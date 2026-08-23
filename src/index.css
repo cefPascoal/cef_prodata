@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- CEF ProData design tokens ----
+     Precision / reliability oriented palette: graphite base with a single
+     restrained technical accent (signal teal) instead of a decorative scheme. */
+  --color-bg: #090a0d;
+  --color-surface: #101318;
+  --color-surface-2: #171b22;
+  --color-border: #232833;
+  --color-border-soft: #1a1f28;
+
+  --color-text: #e7eaef;
+  --color-text-muted: #8b93a1;
+  --color-text-faint: #545c6a;
+
+  --color-signal: #4fd1c5;
+  --color-signal-soft: #8fe3da;
+  --color-warn: #e0a458;
+
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.6s ease both;
+  --animate-flow: flow 3.2s linear infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes flow {
+    to { stroke-dashoffset: -40; }
+  }
+}
+
+:root { color-scheme: dark; }
+
+[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f7f7f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #eeeeec;
+  --color-border: #dcdcd8;
+  --color-border-soft: #e6e6e2;
+  --color-text: #171a1f;
+  --color-text-muted: #565d68;
+  --color-text-faint: #8a909c;
+  --color-signal: #0f8c7f;
+  --color-signal-soft: #0a6b61;
+  --color-warn: #9c5f1e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+}
+
+::selection { background-color: var(--color-signal); color: #090a0d; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-faint); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.focus-ring { outline: none; }
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
