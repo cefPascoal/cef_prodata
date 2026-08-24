@@ -1,4 +1,4 @@
-export type ProjectStatus = "placeholder" | "planned";
+export type ProjectStatus = "placeholder" | "planned" | "experience";
 
 export type Project = {
   id: string;
@@ -29,14 +29,13 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "operational-data-platform",
-    status: "placeholder",
+    status: "experience",
     name: "Operational Data Platform",
-    summary:
-      "Data platform designed to integrate operational information from different systems and APIs, applying structured ingestion, transformation and modelling processes.",
-    problem: "Integrating data coming from different APIs and operational systems.",
+    summary:"Operational data platform integrating Valuekeep and WebSupervisor/ComAp through APIs into a structured SQL Server data warehouse environment.",
+    problem: "Operational data was distributed across two different systems, Valuekeep and WebSupervisor/ComAp, making it difficult to consolidate, standardize, and prepare the information for analysis and operational reporting. The existing SQL Server environment was available but was not being used as a structured data warehouse. A centralized and reliable data flow was therefore needed to integrate the sources, organize the data, and make it available in a consistent format for downstream consumption.",
     solution:
-      "Development of an ingestion and transformation pipeline structured in layers, from raw extraction to business-ready models.",
-    architecture: "API → Python → DuckDB → Bronze → Silver → Gold → SQL Server",
+      "Data is extracted from Valuekeep and WebSupervisor/ComAp APIs using Python. The extracted data is temporarily processed in DuckDB and exported as CSV files. Apache Hop loads the raw files into SQL Server, where the data is progressively transformed and structured across Bronze, Silver, and Gold layers for analytical and operational consumption.",
+    architecture: "API → Python → DuckDB → CSV → Apache Hop → SQL Server → Bronze → Silver → Gold",
     stack: ["Python", "APIs", "DuckDB", "SQL Server", "Apache Hop", "Git", "Jenkins"],
     result: "The implementation established a centralized data platform for operational data from Valuekeep and WebSupervisor/ComAp. It introduced automated ingestion and transformation processes, historical data availability, improved data traceability and consistency, and structured datasets for analytical and operational consumption.",
     engineeringConcerns: [
@@ -47,7 +46,6 @@ export const projects: Project[] = [
       "Automation",
       "Monitoring",
     ],
-    githubUrl: "[PROJECT_GITHUB_URL]",
   },
   {
     id: "api-data-pipeline",

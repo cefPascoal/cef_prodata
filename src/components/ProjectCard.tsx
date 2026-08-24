@@ -4,6 +4,7 @@ import type { Project } from "../data/projects";
 const STATUS_LABEL: Record<Project["status"], string> = {
   placeholder: "example",
   planned: "planned",
+  experience: "Professional Experience",
 };
 
 export function ProjectCard({ project }: { project: Project }) {
