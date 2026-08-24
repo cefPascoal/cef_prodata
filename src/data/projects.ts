@@ -37,8 +37,8 @@ export const projects: Project[] = [
     solution:
       "Development of an ingestion and transformation pipeline structured in layers, from raw extraction to business-ready models.",
     architecture: "API → Python → DuckDB → Bronze → Silver → Gold → SQL Server",
-    stack: ["Python", "APIs", "DuckDB", "SQL Server", "Apache Hop", "dbt", "Git", "Jenkins"],
-    result: "[ADD INFORMATION: outcome, without inventing metrics]",
+    stack: ["Python", "APIs", "DuckDB", "SQL Server", "Apache Hop", "Git", "Jenkins"],
+    result: "The implementation established a centralized data platform for operational data from Valuekeep and WebSupervisor/ComAp. It introduced automated ingestion and transformation processes, historical data availability, improved data traceability and consistency, and structured datasets for analytical and operational consumption.",
     engineeringConcerns: [
       "Data quality",
       "Error handling",
