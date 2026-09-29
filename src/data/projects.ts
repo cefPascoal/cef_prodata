@@ -48,16 +48,40 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "api-data-pipeline",
-    status: "planned",
-    name: "API Data Pipeline",
-    summary: "Ingestion pipeline consuming external APIs into a queryable data store.",
-    problem: "Consolidating data from external APIs into one consistent, queryable format.",
-    solution: "Automated extraction with Python, intermediate storage in DuckDB, incremental load into SQL Server.",
-    architecture: "API → Python → DuckDB → SQL Server",
-    stack: ["Python", "DuckDB", "SQL Server"],
-    result: "In progress.",
-  },
+  id: "open-meteo-air-quality-pipeline",
+  status: "experience",
+  name: "Open-Meteo Air Quality Pipeline",
+  summary:
+    "Data engineering pipeline for ingesting, transforming, validating, and persisting air quality data from the Open-Meteo API.",
+  problem:
+    "External API data needs to be ingested reliably, transformed into a consistent structure, validated, and separated between trusted and invalid records before downstream consumption.",
+  solution:
+    "A modular Python pipeline was implemented with API ingestion, retry and resilience handling, transformation, data validation, quarantine of invalid records, JSONL persistence, automated tests, and operational execution with logging.",
+  architecture:
+    "Open-Meteo API → API Client → Ingestion → Transformation → Validation → Orchestration → Output / Quarantine",
+  stack: [
+    "Python",
+    "HTTPX",
+    "Pytest",
+    "YAML",
+    "JSONL",
+    "Git",
+    "GitHub",
+  ],
+  result:
+    "A tested and operational pipeline capable of processing air quality data for multiple locations, preserving invalid records for analysis and producing structured JSONL outputs with execution logging.",
+  engineeringConcerns: [
+    "Data quality",
+    "API resilience",
+    "Retry and backoff",
+    "Error handling",
+    "Quarantine",
+    "Automated testing",
+    "Observability",
+  ],
+  githubUrl:
+    "https://github.com/cefPascoal/open-meteo-air-quality-pipeline",
+},
   {
     id: "data-quality-pipeline",
     status: "planned",
