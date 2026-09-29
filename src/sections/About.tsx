@@ -1,8 +1,11 @@
 import { SectionEyebrow } from "../components/SectionEyebrow";
-import { profile } from "../data/profile";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getTranslations } from "../i18n/translations";
 
 export function About() {
-  const { about } = profile;
+  const { language } = useLanguage();
+  const t = getTranslations(language);
+  const { about } = t;
 
   return (
     <section id="about" className="scroll-mt-20 px-5 py-24 sm:px-8">

@@ -1,7 +1,11 @@
 import { ArrowRight, Github, Linkedin, Download } from "lucide-react";
 import { profile } from "../data/profile";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getTranslations } from "../i18n/translations";
 
 export function Hero() {
+  const { language } = useLanguage();
+  const t = getTranslations(language);
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-24">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -51,7 +55,7 @@ export function Hero() {
               className="focus-ring group flex items-center gap-2 rounded-md px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5"
               style={{ backgroundColor: "var(--color-signal)", color: "#090a0d" }}
             >
-              View Projects
+              {t.actions.viewProjects}
               <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
@@ -63,7 +67,7 @@ export function Hero() {
               className="focus-ring rounded-md border px-5 py-3 text-sm font-medium transition-colors"
               style={{ borderColor: "var(--color-border)", color: "var(--color-text)" }}
             >
-              Contact Me
+              {t.actions.contactMe}
             </a>
 
             <div className="ml-1 flex items-center gap-1">
@@ -124,7 +128,15 @@ export function Hero() {
 }
 
 function HeroPipeline() {
-  const stages = ["Extract", "Transform", "Validate", "Deliver"];
+  const { language } = useLanguage();
+  const t = getTranslations(language);
+
+  const stages = [
+    t.hero.extract,
+    t.hero.transform,
+    t.hero.validate,
+    t.hero.deliver,
+  ];
   return (
     <div
       className="rounded-xl border p-6"
@@ -134,7 +146,7 @@ function HeroPipeline() {
         className="mb-5 font-mono text-xs uppercase tracking-[0.2em]"
         style={{ color: "var(--color-text-faint)" }}
       >
-        Pipeline status
+        {t.hero.pipelineStatus}
       </p>
       <div className="space-y-4">
         {stages.map((stage, i) => (

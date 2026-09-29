@@ -2,19 +2,31 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getTranslations } from "../i18n/translations";
 
-const NAV_ITEMS = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
-  { id: "contact", label: "Contact" },
-];
+const NAV_IDS = [
+  "home",
+  "about",
+  "skills",
+  "projects",
+  "experience",
+  "contact",
+] as const;
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
-  const activeId = useActiveSection(NAV_ITEMS.map((i) => i.id));
+  const activeId = useActiveSection(NAV_IDS.map((id) => id));
+  const { language, setLanguage } = useLanguage();
+  const t = getTranslations(language);
+  const navItems = [
+  { id: "home", label: t.nav.home },
+  { id: "about", label: t.nav.about },
+  { id: "skills", label: t.nav.skills },
+  { id: "projects", label: t.nav.projects },
+  { id: "experience", label: t.nav.experience },
+  { id: "contact", label: t.actions.contact },
+];
 
   const handleNavigate = (id: string) => {
     setOpen(false);
@@ -47,7 +59,7 @@ export function Navbar() {
         </button>
 
         <ul className="hidden items-center gap-1 md:flex">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => handleNavigate(item.id)}
@@ -69,6 +81,32 @@ export function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-3 md:flex">
+          <div
+            className="flex items-center rounded-md border p-0.5"
+            style={{
+              borderColor: "var(--color-border)",
+              backgroundColor: "var(--color-surface)",
+            }}
+          >
+            {(["pt", "en"] as const).map((option) => (
+              <button
+                key={option}
+                onClick={() => setLanguage(option)}
+                className="focus-ring rounded px-2 py-1 text-xs font-medium uppercase transition-colors"
+                style={{
+                  backgroundColor:
+                    language === option ? "var(--color-signal)" : "transparent",
+                  color:
+                    language === option
+                      ? "#090a0d"
+                      : "var(--color-text-muted)",
+                }}
+                aria-pressed={language === option}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
           <ThemeToggle />
           <button
             onClick={() => handleNavigate("contact")}
@@ -99,7 +137,7 @@ export function Navbar() {
           style={{ borderColor: "var(--color-border-soft)", backgroundColor: "var(--color-bg)" }}
         >
           <ul className="flex flex-col px-5 py-3">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <li key={item.id}>
                 <button
                   onClick={() => handleNavigate(item.id)}

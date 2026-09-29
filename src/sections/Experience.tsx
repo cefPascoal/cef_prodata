@@ -1,7 +1,13 @@
 import { SectionEyebrow } from "../components/SectionEyebrow";
 import { experience, education, certifications } from "../data/experience";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getTranslations } from "../i18n/translations";
+
 
 export function Experience() {
+  const { language } = useLanguage();
+  const t = getTranslations(language);
+
   return (
     <section
       id="experience"
@@ -9,16 +15,21 @@ export function Experience() {
       style={{ borderColor: "var(--color-border-soft)" }}
     >
       <div className="mx-auto max-w-6xl">
-        <SectionEyebrow>Background</SectionEyebrow>
+        <SectionEyebrow>{t.experience.eyebrow}</SectionEyebrow>
         <h2
           className="text-3xl font-semibold tracking-tight sm:text-4xl"
           style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
         >
-          Experience
+          {t.experience.title}
         </h2>
 
         <ol className="mt-10 space-y-8 border-l pl-8" style={{ borderColor: "var(--color-border)" }}>
-          {experience.map((item) => (
+          {experience.map((item) => {
+            const translation = t.experience.items[
+              item.id as keyof typeof t.experience.items
+            ];
+
+            return (
             <li key={item.id} className="relative">
               <span
                 className="absolute -left-[calc(2rem+5px)] top-1.5 h-2.5 w-2.5 rounded-full"
@@ -33,10 +44,10 @@ export function Experience() {
                 </span>
               </div>
               <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--color-text-muted)" }}>
-                {item.description}
+                {translation.description}
               </p>
               <ul className="mt-3 list-inside list-disc space-y-1">
-                {item.responsibilities.map((r, i) => (
+                {translation.responsibilities.map((r, i) => (
                   <li key={i} className="text-sm" style={{ color: "var(--color-text-muted)" }}>
                     {r}
                   </li>
@@ -54,7 +65,8 @@ export function Experience() {
                 ))}
               </div>
             </li>
-          ))}
+          );
+          })}
         </ol>
 
         <div className="mt-16 grid gap-10 sm:grid-cols-2">
@@ -63,24 +75,31 @@ export function Experience() {
               className="mb-4 font-mono text-xs uppercase tracking-wider"
               style={{ color: "var(--color-text-faint)" }}
             >
-              Education
+              {t.experience.education}
             </h3>
             <div className="space-y-4">
-              {education.map((e) => (
+              {education.map((e) => {
+                const translation =
+                  t.experience.educationItems[
+                    e.id as keyof typeof t.experience.educationItems
+                  ];
+
+                return (
                 <div key={e.id}>
                   <p className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
-                    {e.title}
+                    {translation.title}
                   </p>
                   <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
                     {e.institution} · {e.period}
                   </p>
                   {e.description && (
                     <p className="mt-1 text-sm" style={{ color: "var(--color-text-faint)" }}>
-                      {e.description}
+                      {translation.description}
                     </p>
                   )}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -89,19 +108,26 @@ export function Experience() {
               className="mb-4 font-mono text-xs uppercase tracking-wider"
               style={{ color: "var(--color-text-faint)" }}
             >
-              Certifications
+              {t.experience.certifications}
             </h3>
             <div className="space-y-4">
-              {certifications.map((c) => (
+              {certifications.map((c) => {
+                const translation =
+                  t.experience.certificationItems[
+                    c.id as keyof typeof t.experience.certificationItems
+                  ];
+
+                return (
                 <div key={c.id}>
                   <p className="text-sm font-medium" style={{ color: "var(--color-text)" }}>
-                    {c.title}
+                    {translation.title}
                   </p>
                   <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
                     {c.institution} · {c.period}
                   </p>
                 </div>
-              ))}
+                );
+            })}
             </div>
           </div>
         </div>
