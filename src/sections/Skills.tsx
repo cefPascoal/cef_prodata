@@ -1,7 +1,25 @@
+
 import { SectionEyebrow } from "../components/SectionEyebrow";
 import { skillCategories, currentlyLearning } from "../data/skills";
+import { useLanguage } from "../i18n/LanguageContext";
+
+const CONTENT = {
+  pt: {
+    eyebrow: "Tecnologias",
+    title: "Competências",
+    currentlyLearning: "Em aprendizagem — ainda não são competências avançadas",
+  },
+  en: {
+    eyebrow: "Technologies",
+    title: "Skills",
+    currentlyLearning: "Currently learning — not yet an advanced competency",
+  },
+};
 
 export function Skills() {
+  const { language } = useLanguage();
+  const content = CONTENT[language];
+
   return (
     <section
       id="skills"
@@ -9,12 +27,16 @@ export function Skills() {
       style={{ borderColor: "var(--color-border-soft)" }}
     >
       <div className="mx-auto max-w-6xl">
-        <SectionEyebrow>Technologies</SectionEyebrow>
+        <SectionEyebrow>{content.eyebrow}</SectionEyebrow>
+
         <h2
           className="text-3xl font-semibold tracking-tight sm:text-4xl"
-          style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: "var(--color-text)",
+          }}
         >
-          Skills
+          {content.title}
         </h2>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -22,7 +44,10 @@ export function Skills() {
             <div
               key={cat.id}
               className="animate-fade-up rounded-xl border p-6"
-              style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}
+              style={{
+                borderColor: "var(--color-border)",
+                backgroundColor: "var(--color-surface)",
+              }}
             >
               <h3
                 className="mb-4 text-sm font-semibold"
@@ -30,12 +55,16 @@ export function Skills() {
               >
                 {cat.title}
               </h3>
+
               <ul className="flex flex-wrap gap-2">
                 {cat.skills.map((skill) => (
                   <li
                     key={skill}
                     className="rounded-md border px-2.5 py-1 font-mono text-xs"
-                    style={{ borderColor: "var(--color-border-soft)", color: "var(--color-text-muted)" }}
+                    style={{
+                      borderColor: "var(--color-border-soft)",
+                      color: "var(--color-text-muted)",
+                    }}
                   >
                     {skill}
                   </li>
@@ -45,7 +74,6 @@ export function Skills() {
           ))}
         </div>
 
-        {/* Currently Learning — deliberately understated, never mixed into the main grid above */}
         <div
           className="mt-8 rounded-xl border border-dashed p-6"
           style={{ borderColor: "var(--color-border)" }}
@@ -54,14 +82,18 @@ export function Skills() {
             className="mb-3 font-mono text-xs uppercase tracking-wider"
             style={{ color: "var(--color-warn)" }}
           >
-            Currently Learning — not yet an advanced competency
+            {content.currentlyLearning}
           </p>
+
           <ul className="flex flex-wrap gap-2">
             {currentlyLearning.map((item) => (
               <li
                 key={item}
                 className="rounded-md px-2.5 py-1 font-mono text-xs"
-                style={{ backgroundColor: "var(--color-surface-2)", color: "var(--color-text-faint)" }}
+                style={{
+                  backgroundColor: "var(--color-surface-2)",
+                  color: "var(--color-text-faint)",
+                }}
               >
                 {item}
               </li>

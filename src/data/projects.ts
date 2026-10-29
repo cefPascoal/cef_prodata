@@ -27,26 +27,7 @@ export type Project = {
  * anonymized or demonstrative data where needed (see project brief, section 15).
  */
 export const projects: Project[] = [
-  {
-    id: "operational-data-platform",
-    status: "experience",
-    name: "Operational Data Platform",
-    summary:"Operational data platform integrating Valuekeep and WebSupervisor/ComAp through APIs into a structured SQL Server data warehouse environment.",
-    problem: "Operational data was distributed across two different systems, Valuekeep and WebSupervisor/ComAp, making it difficult to consolidate, standardize, and prepare the information for analysis and operational reporting. The existing SQL Server environment was available but was not being used as a structured data warehouse. A centralized and reliable data flow was therefore needed to integrate the sources, organize the data, and make it available in a consistent format for downstream consumption.",
-    solution:
-      "Data is extracted from Valuekeep and WebSupervisor/ComAp APIs using Python. The extracted data is temporarily processed in DuckDB and exported as CSV files. Apache Hop loads the raw files into SQL Server, where the data is progressively transformed and structured across Bronze, Silver, and Gold layers for analytical and operational consumption.",
-    architecture: "API → Python → DuckDB → CSV → Apache Hop → SQL Server → Bronze → Silver → Gold",
-    stack: ["Python", "APIs", "DuckDB", "SQL Server", "Apache Hop", "Git", "Jenkins"],
-    result: "The implementation established a centralized data platform for operational data from Valuekeep and WebSupervisor/ComAp. It introduced automated ingestion and transformation processes, historical data availability, improved data traceability and consistency, and structured datasets for analytical and operational consumption.",
-    engineeringConcerns: [
-      "Data quality",
-      "Error handling",
-      "Authentication",
-      "Incremental extraction",
-      "Automation",
-      "Monitoring",
-    ],
-  },
+
   {
   id: "open-meteo-air-quality-pipeline",
   status: "experience",
@@ -69,7 +50,7 @@ export const projects: Project[] = [
     "GitHub",
   ],
   result:
-    "A tested and operational pipeline capable of processing air quality data for multiple locations, preserving invalid records for analysis and producing structured JSONL outputs with execution logging.",
+    "A modular Python pipeline for air-quality data ingestion, transformation, and validation. It separates valid and invalid records, persists outputs in JSONL, and includes automated tests, configurable API retries, and execution logging.",
   engineeringConcerns: [
     "Data quality",
     "API resilience",

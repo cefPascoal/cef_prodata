@@ -1,13 +1,9 @@
+
 import { useState, type FormEvent } from "react";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { profile } from "../data/profile";
+import { useLanguage } from "../i18n/LanguageContext";
 
-/**
- * The site is fully static (GitHub Pages) — this form has no backend of its own.
- * Submissions go directly to Formspree, which forwards them to the configured email.
- * The endpoint below is a public form ID, not a secret, and is safe to keep in the
- * frontend (see https://formspree.io — this is the intended integration model).
- */
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mbgrepjd";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -20,7 +16,43 @@ type FieldErrors = {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const CONTENT = {
+  pt: {
+    success: "Mensagem enviada com sucesso. Obrigado pelo contacto.",
+    name: "Nome",
+    email: "E-mail",
+    subject: "Assunto",
+    message: "Mensagem",
+    messagePlaceholder: "Em que projeto ou desafio estás a trabalhar?",
+    send: "Enviar mensagem",
+    sending: "A enviar…",
+    nameRequired: "Introduz o teu nome.",
+    emailRequired: "Introduz o teu e-mail.",
+    emailInvalid: "Introduz um endereço de e-mail válido.",
+    messageRequired: "Introduz uma mensagem.",
+    error: "Ocorreu um erro. Tenta novamente ou contacta-me diretamente por e-mail",
+  },
+  en: {
+    success: "Message sent successfully. Thank you for reaching out.",
+    name: "Name",
+    email: "Email",
+    subject: "Subject",
+    message: "Message",
+    messagePlaceholder: "What are you working on?",
+    send: "Send message",
+    sending: "Sending…",
+    nameRequired: "Please enter your name.",
+    emailRequired: "Please enter your email.",
+    emailInvalid: "Please enter a valid email address.",
+    messageRequired: "Please enter a message.",
+    error: "Something went wrong. Please try again or contact me directly by email",
+  },
+};
+
 export function ContactForm() {
+  const { language } = useLanguage();
+  const content = CONTENT[language];
+
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -30,20 +62,29 @@ export function ContactForm() {
     const message = String(data.get("message") ?? "").trim();
 
     const next: FieldErrors = {};
-    if (!name) next.name = "Please enter your name.";
-    if (!email) next.email = "Please enter your email.";
-    else if (!EMAIL_PATTERN.test(email)) next.email = "Please enter a valid email address.";
-    if (!message) next.message = "Please enter a message.";
+
+    if (!name) next.name = content.nameRequired;
+
+    if (!email) {
+      next.email = content.emailRequired;
+    } else if (!EMAIL_PATTERN.test(email)) {
+      next.email = content.emailInvalid;
+    }
+
+    if (!message) next.message = content.messageRequired;
+
     return next;
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     const form = e.currentTarget;
     const data = new FormData(form);
 
     const fieldErrors = validate(data);
     setErrors(fieldErrors);
+
     if (Object.keys(fieldErrors).length > 0) {
       return;
     }
@@ -57,6 +98,7 @@ export function ContactForm() {
 
     try {
       setStatus("sending");
+
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         headers: {
@@ -84,12 +126,13 @@ export function ContactForm() {
         className="flex items-center gap-3 rounded-xl border p-6"
         role="status"
         aria-live="polite"
-        style={{ borderColor: "var(--color-signal)", backgroundColor: "var(--color-surface)" }}
+        style={{
+          borderColor: "var(--color-signal)",
+          backgroundColor: "var(--color-surface)",
+        }}
       >
         <CheckCircle2 style={{ color: "var(--color-signal)" }} size={22} />
-        <p style={{ color: "var(--color-text)" }}>
-          Message sent successfully. Thank you for reaching out.
-        </p>
+        <p style={{ color: "var(--color-text)" }}>{content.success}</p>
       </div>
     );
   }
@@ -98,15 +141,16 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} noValidate className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
-          label="Name"
+          label={content.name}
           name="name"
           type="text"
           required
           autoComplete="name"
           error={errors.name}
         />
+
         <Field
-          label="Email"
+          label={content.email}
           name="email"
           type="email"
           required
@@ -115,7 +159,12 @@ export function ContactForm() {
         />
       </div>
 
-      <Field label="Subject" name="subject" type="text" autoComplete="off" />
+      <Field
+        label={content.subject}
+        name="subject"
+        type="text"
+        autoComplete="off"
+      />
 
       <div>
         <label
@@ -123,8 +172,9 @@ export function ContactForm() {
           className="mb-1.5 block font-mono text-xs uppercase tracking-wider"
           style={{ color: "var(--color-text-faint)" }}
         >
-          Message
+          {content.message}
         </label>
+
         <textarea
           id="message"
           name="message"
@@ -135,14 +185,22 @@ export function ContactForm() {
           aria-describedby={errors.message ? "message-error" : undefined}
           className="focus-ring w-full resize-none rounded-md border px-3.5 py-2.5 text-sm outline-none"
           style={{
-            borderColor: errors.message ? "var(--color-warn)" : "var(--color-border)",
+            borderColor: errors.message
+              ? "var(--color-warn)"
+              : "var(--color-border)",
             backgroundColor: "var(--color-surface)",
             color: "var(--color-text)",
           }}
-          placeholder="What are you working on?"
+          placeholder={content.messagePlaceholder}
         />
+
         {errors.message && (
-          <p id="message-error" role="alert" className="mt-1.5 text-xs" style={{ color: "var(--color-warn)" }}>
+          <p
+            id="message-error"
+            role="alert"
+            className="mt-1.5 text-xs"
+            style={{ color: "var(--color-warn)" }}
+          >
             {errors.message}
           </p>
         )}
@@ -156,7 +214,7 @@ export function ContactForm() {
         style={{ backgroundColor: "var(--color-signal)", color: "#090a0d" }}
       >
         <Send size={16} />
-        {status === "sending" ? "Sending…" : "Send message"}
+        {status === "sending" ? content.sending : content.send}
       </button>
 
       {status === "error" && (
@@ -167,8 +225,8 @@ export function ContactForm() {
           style={{ color: "var(--color-warn)" }}
         >
           <AlertCircle size={15} />
-          Something went wrong. Please try again or contact me directly by email
-          {profile.email ? ` at ${profile.email}` : ""}.
+          {content.error}
+          {profile.email ? `: ${profile.email}.` : "."}
         </p>
       )}
     </form>
@@ -191,6 +249,7 @@ function Field({
   error?: string;
 }) {
   const errorId = `${name}-error`;
+
   return (
     <div>
       <label
@@ -200,6 +259,7 @@ function Field({
       >
         {label}
       </label>
+
       <input
         id={name}
         name={name}
@@ -216,8 +276,14 @@ function Field({
           color: "var(--color-text)",
         }}
       />
+
       {error && (
-        <p id={errorId} role="alert" className="mt-1.5 text-xs" style={{ color: "var(--color-warn)" }}>
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-xs"
+          style={{ color: "var(--color-warn)" }}
+        >
           {error}
         </p>
       )}

@@ -6,6 +6,12 @@ import { getTranslations } from "../i18n/translations";
 export function Hero() {
   const { language } = useLanguage();
   const t = getTranslations(language);
+
+  const heroText = {
+  pt: "Construo pipelines de dados confiáveis, integro sistemas e transformo dados operacionais em soluções estruturadas e fiáveis.",
+  en: profile.heroText,
+  }[language];
+
   return (
     <section id="home" className="relative flex min-h-screen items-center overflow-hidden pt-24">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -42,7 +48,7 @@ export function Hero() {
             className="mt-6 max-w-xl text-base leading-relaxed sm:text-lg"
             style={{ color: "var(--color-text-muted)" }}
           >
-            {profile.heroText}
+            {heroText}
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">

@@ -1,8 +1,14 @@
+
 import { SectionEyebrow } from "../components/SectionEyebrow";
 import { ProjectCard } from "../components/ProjectCard";
 import { projects } from "../data/projects";
+import { useLanguage } from "../i18n/LanguageContext";
+import { projectCardLabels } from "../i18n/projectTranslations";
 
 export function Projects() {
+  const { language } = useLanguage();
+  const labels = projectCardLabels[language];
+
   return (
     <section
       id="projects"
@@ -10,25 +16,24 @@ export function Projects() {
       style={{ borderColor: "var(--color-border-soft)" }}
     >
       <div className="mx-auto max-w-6xl">
-        <SectionEyebrow>Case studies</SectionEyebrow>
+        <SectionEyebrow>{labels.eyebrow}</SectionEyebrow>
+
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2
             className="text-3xl font-semibold tracking-tight sm:text-4xl"
-            style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+            style={{
+              fontFamily: "var(--font-display)",
+              color: "var(--color-text)",
+            }}
           >
-            Projects
+            {labels.title}
           </h2>
-          <p className="max-w-md text-sm" style={{ color: "var(--color-text-faint)" }}>
-            Cards marked <em>example</em> are structural placeholders based on real practical
-            work — replace with your project details in{" "}
-            <code
-              className="rounded px-1 py-0.5 font-mono text-xs"
-              style={{ backgroundColor: "var(--color-surface-2)" }}
-            >
-              src/data/projects.ts
-            </code>
-            . Cards marked <em>planned</em> are future / in-development work, shown honestly as
-            such.
+
+          <p
+            className="max-w-md text-sm"
+            style={{ color: "var(--color-text-faint)" }}
+          >
+            
           </p>
         </div>
 

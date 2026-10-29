@@ -1,7 +1,23 @@
+
 import { SectionEyebrow } from "../components/SectionEyebrow";
 import { learningJourney } from "../data/expertise";
+import { useLanguage } from "../i18n/LanguageContext";
+
+const CONTENT = {
+  pt: {
+    eyebrow: "Progressão contínua, não um destino final",
+    title: "Percurso de Aprendizagem",
+  },
+  en: {
+    eyebrow: "Consistent progression, not a finished destination",
+    title: "Learning Journey",
+  },
+};
 
 export function LearningJourney() {
+  const { language } = useLanguage();
+  const content = CONTENT[language];
+
   return (
     <section
       id="learning-journey"
@@ -9,18 +25,23 @@ export function LearningJourney() {
       style={{ borderColor: "var(--color-border-soft)" }}
     >
       <div className="mx-auto max-w-6xl">
-        <SectionEyebrow>Consistent progression, not a finished destination</SectionEyebrow>
+        <SectionEyebrow>{content.eyebrow}</SectionEyebrow>
+
         <h2
           className="text-3xl font-semibold tracking-tight sm:text-4xl"
-          style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          style={{
+            fontFamily: "var(--font-display)",
+            color: "var(--color-text)",
+          }}
         >
-          Learning Journey
+          {content.title}
         </h2>
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
           {learningJourney.map((step, i) => {
-            const isCurrent = i === learningJourney.length - 2; // Data Platforms: current edge
-            const isFuture = i === learningJourney.length - 1; // Data Analytics: still ahead
+            const isCurrent = i === learningJourney.length - 2;
+            const isFuture = i === learningJourney.length - 1;
+
             return (
               <div key={step} className="flex items-center gap-3">
                 <span
@@ -41,6 +62,7 @@ export function LearningJourney() {
                 >
                   {step}
                 </span>
+
                 {i < learningJourney.length - 1 && (
                   <span style={{ color: "var(--color-text-faint)" }}>→</span>
                 )}
