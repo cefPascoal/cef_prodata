@@ -6,5 +6,5 @@ import tailwindcss from '@tailwindcss/vite'
 // on GitHub Pages, regardless of the repository name.
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: './',
+  base: "/cef_prodata/",
 })
